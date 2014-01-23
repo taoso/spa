@@ -7,7 +7,7 @@
 }
 
 h1, h2, h3, h4, h5, h6, p {
-  margin-bottom: 10px;
+  margin-bottom: 6pt;
 }
 
 ol, ul, dl {
@@ -15,10 +15,9 @@ ol, ul, dl {
 }
 
 body {
-  font: 13px sans-serif;
+  font: 10pt sans-serif;
   color: #444;
   background: #888;
-  overflow: hidden;
 }
 
 a {
@@ -37,3 +36,25 @@ strong {
   font-weight: 800;
   color: #000;
 }
+
+#spa {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: #fff;
+  min-height: 15em;
+  min-width: 35em;
+  overflow: hidden;
+}
+
+.spa-x-select {}
+
+.spa-x-clearfloat {
+  height: 0 !important;
+  float: none !important;
+  visibility: hidden !important;
+  clear: both !important;
+}
+

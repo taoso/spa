@@ -4,6 +4,7 @@ spa.shell = function () {
       chat: {
         opened: true,
         closed: true,
+        destroyed: true,
       },
     },
     chat_extend_time: 250,
@@ -32,7 +33,7 @@ spa.shell = function () {
         resize_idto: undefined,
       },
       jqueryMap = {},
-      copyAnchorMap, setJqueryMap, toggleChat, onClickChat, initModule,
+      copyAnchorMap, setJqueryMap, toggleChat, initModule,
       changeAnchorPart, setChatAnchor, onHashChange, onResize;
 
   setJqueryMap = function () {
@@ -94,13 +95,6 @@ spa.shell = function () {
     return true;
   };
 
-  onClickChat = function (event) {
-    changeAnchorPart({
-      chat: (stateMap.is_chat_retracted ? 'open' : 'closed'),
-    });
-
-    return false;
-  };
   onResize = function () {
     if (stateMap.resize_idto) return true;
 
@@ -166,6 +160,12 @@ spa.shell = function () {
     _s_chat_proposed = anchor_map_proposed._s_chat;
 
     if (!anchor_map_previous || _s_chat_previous !== _s_chat_proposed) {
+      if (_s_chat_previous === 'destroyed') {
+        spa.chat.configModule({
+          set_chat_anchor: setChatAnchor,
+        });
+        spa.chat.initModule(stateMap.$container.find('.spa-shell-chat'));
+      }
       _s_chat_proposed = anchor_map_proposed.chat;
       switch (_s_chat_proposed) {
         case 'opened':
@@ -173,6 +173,9 @@ spa.shell = function () {
           break;
         case 'closed':
           is_ok = spa.chat.setSliderPosition('closed');
+          break;
+        case 'destroyed':
+          is_ok = spa.chat.removeSlider();
           break;
         default:
           spa.chat.setSliderPosition('closed');

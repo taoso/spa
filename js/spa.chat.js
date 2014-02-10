@@ -51,7 +51,7 @@ spa.chat = function () {
         slider_opened_px: 0,
       },
       jqueryMap = {},
-      setJqueryMap, getEmSize, setPxSizes, setSliderPosition,
+      setJqueryMap, getEmSize, setPxSizes, setSliderPosition, removeSlider,
       onClickToggle, configModule, initModule;
 
   getEmSize = function (elem) {
@@ -65,6 +65,7 @@ spa.chat = function () {
     jqueryMap = {
       $slider: $slider,
       $head: $slider.find('.spa-chat-head'),
+      $closer: $slider.find('.spa-chat-closer'),
       $toggle: $slider.find('.spa-chat-head-toggle'),
       $title: $slider.find('.spa-chat-head-title'),
       $sizer: $slider.find('.spa-chat-sizer'),
@@ -154,6 +155,15 @@ spa.chat = function () {
     return false;
   };
 
+  onClickCloser = function (event) {
+    var set_chat_anchor = configMap.set_chat_anchor;
+    if (stateMap.position_type !== 'destroyed') {
+      set_chat_anchor('destroyed');
+    }
+
+    return false;
+  };
+
   configModule = function (input_map) {
     spa.util.setConfigMap({
       input_map: input_map,
@@ -172,7 +182,24 @@ spa.chat = function () {
 
     jqueryMap.$toggle.attr('title', configMap.slider_closed_title);
     jqueryMap.$head.click(onClickToggle);
+    jqueryMap.$closer.click(onClickCloser);
     stateMap.position_type = 'closed';
+
+    return true;
+  };
+
+  removeSlider = function () {
+    if (jqueryMap.$slider) {
+      jqueryMap.$slider.remove();
+      jqueryMap = {};
+    }
+
+    stateMap.$append_target = null;
+    stateMap.position_type = 'closed';
+
+    configMap.chat_model = null;
+    configMap.people_model = null;
+    configMap.set_chat_anchor = null;
 
     return true;
   };
@@ -182,5 +209,6 @@ spa.chat = function () {
       initModule: initModule,
       setSliderPosition: setSliderPosition,
       handleResize: handleResize,
+      removeSlider: removeSlider,
   };
 }();

@@ -1,0 +1,4 @@
+spa.avtr = function () {
+  return {
+  };
+}();
